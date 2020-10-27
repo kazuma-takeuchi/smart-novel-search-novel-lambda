@@ -36,3 +36,7 @@ def get_first_day(dt):
 def relative_date(d, years: int = 0, months: int = 0, days: int = 0):
     relative_date = d + relativedelta(years=years, months=months, days=days)
     return relative_date
+
+def relative_time(d, years: int = 0, months: int = 0, days: int = 0, hours: int = 0, minutes: int = 0, seconds: int = 0):
+    relative_time = d + relativedelta(years=years, months=months, days=days, hours=hours, minutes=minutes, seconds=seconds)
+    return relative_time

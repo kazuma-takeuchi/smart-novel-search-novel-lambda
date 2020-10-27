@@ -4,7 +4,7 @@ from datetime import date, datetime
 from pydantic import BaseModel, validator
 from elasticsearch_dsl import FacetedSearch, TermsFacet
 
-from utils.date_utils import get_today, relative_date
+from utils.date_utils import jst_now, relative_time
 
 ALIAS = "smart-novel"
 
@@ -28,13 +28,13 @@ class NovelFacetedSearch(FacetedSearch):
 
 
 class FiltersModel(BaseModel):
-    tag: str = None
-    genre: str = None
+    tag: List[str] = None
+    genre: List[str] = None
 
 
 class DateModel(BaseModel):
-    from_: datetime = relative_date(get_today(), days=-30)
-    to: datetime = get_today()
+    from_: datetime = relative_time(jst_now(), days=-30)
+    to: datetime = jst_now()
 
     @validator('to', always=True)
     def to_larger_than_from(cls, v, values, **kwargs):
