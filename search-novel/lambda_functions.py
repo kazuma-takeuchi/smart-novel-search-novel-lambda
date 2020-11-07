@@ -13,7 +13,7 @@ from exceptions import InvalidESDocumentError
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-NG_WORDS = ["エロ", "R18", "R15", "えちえち", "エッチ", "BL", "ロリ"]
+NG_WORDS = ["エロ", "R18", "R15", "えちえち", "エッチ", "BL", "ロリ", "SEX", "セックス", "ＢＬ", "ＳＥＸ", "Ｒ15", "Ｒ18", "Ｒ１５", "Ｒ１８"]
 
 
 def err(status_code: int, err_reason):
@@ -57,11 +57,11 @@ def execute_search(es, faceted_search_model, params: Dict):
              .filter("range", **date_range_filter)
              .exclude("terms", title=NG_WORDS)
              .exclude("terms", description=NG_WORDS)
-             .exclude("terms", tag=NG_WORDS)
-             .exclude("terms", genre=NG_WORDS)
              .sort(sort)
              [offset:offset + limit]
              )
+    for ng_word in NG_WORDS:
+        ts._s = (ts._s.exclude("match", tag=ng_word).exclude("match", genre=ng_word))
     response = ts.execute()
     return response
 
